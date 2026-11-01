@@ -1,0 +1,78 @@
+using UnityEngine;
+using UnityEngine.UI;
+using System.Collections;
+
+public class FeederController : MonoBehaviour
+{
+    public enum FoodType { Bone, Apple, Carrot }
+    public FoodType currentFood = FoodType.Bone;
+
+    [Header("Food Prefabs")]
+    public GameObject bonePrefab;
+    public GameObject applePrefab;
+    public GameObject carrotPrefab;
+
+    [Header("Settings")]
+    public Transform foodSpawnPoint;
+    public float throwForce = 10f;
+
+    [Header("UI")]
+    public Image foodIconUI;
+    public Sprite boneIcon, appleIcon, carrotIcon;
+
+    void Start()
+    {
+
+    }
+
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(1))
+        {
+            CycleFoodType();
+        }
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            ThrowFood();
+        }
+    }
+
+    private void CycleFoodType()
+    {
+        currentFood = (FoodType)(((int)currentFood + 1) % 3);
+    }
+
+    private void ThrowFood()
+    {
+        GameObject foodObj = Instantiate(GetFoodPrefab(currentFood), foodSpawnPoint.position, Quaternion.identity);
+
+        Rigidbody rb = foodObj.GetComponent<Rigidbody>();
+        if (rb == null)
+            rb = foodObj.AddComponent<Rigidbody>();
+
+        rb.useGravity = true;
+        rb.collisionDetectionMode = CollisionDetectionMode.Continuous;
+        rb.AddForce(foodSpawnPoint.forward * throwForce, ForceMode.VelocityChange);
+
+        FoodProjectile projectile = foodObj.GetComponent<FoodProjectile>();
+        if (projectile == null)
+            projectile = foodObj.AddComponent<FoodProjectile>();
+
+        projectile.foodType = currentFood;
+
+        Destroy(foodObj, 3f);
+    }
+
+
+    private GameObject GetFoodPrefab(FoodType food)
+    {
+        return food switch
+        {
+            FoodType.Bone => bonePrefab,
+            FoodType.Apple => applePrefab,
+            FoodType.Carrot => carrotPrefab,
+            _ => null
+        };
+    }
+}
