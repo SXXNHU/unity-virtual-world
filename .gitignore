@@ -1,0 +1,33 @@
+﻿# Unity generated
+[Ll]ibrary/
+[Tt]emp/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+MemoryCaptures/
+
+# IDE
+.vs/
+.idea/
+.vscode/
+*.csproj
+*.sln
+*.suo
+*.user
+*.pidb
+*.booproj
+
+# Build / packaging artifacts
+*.apk
+*.aab
+*.unitypackage
+*.zip
+*.mp4
+*.pdb
+*.mdb
+
+# OS
+.DS_Store
+Thumbs.db
